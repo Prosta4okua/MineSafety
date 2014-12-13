@@ -31,7 +31,7 @@ public class MineSafety
     public void playerTick(TickEvent.PlayerTickEvent event)
     {
         if (event.phase == TickEvent.Phase.END) return;
-        if (event.player.posY >= 60) return;
+        if (event.player.posY >= 50) return;
         if (event.player.getCurrentArmor(3) != null && event.player.getCurrentArmor(3).getItem() instanceof ItemArmor && ((ItemArmor) event.player.getCurrentArmor(3).getItem()).armorType == 0) return;
         if (event.player.worldObj.canBlockSeeTheSky((int) event.player.posX, (int) event.player.posY, (int) event.player.posZ)) return;
         if (random.nextDouble() < 0.97d) return;
