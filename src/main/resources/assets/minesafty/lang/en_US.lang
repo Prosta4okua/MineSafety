@@ -1,1 +1,9 @@
 death.attack.helmet=You should wear a helmet
+
+d3.mineSafety.config.mineSafety=MineSafety
+
+d3.mineSafety.config.yLevel=yLevel
+d3.mineSafety.config.yLevel.tooltip=The Y level at which you should wear a helmet.
+
+d3.mineSafety.config.chance=chance
+d3.mineSafety.config.chance.tooltip=The chance you get damaged this tick, in percent.
