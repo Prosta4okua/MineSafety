@@ -1,4 +1,5 @@
-death.attack.helmet=You should wear a helmet
+death.attack.helmet=%1$s should wear a helmet next time
+d3.mineSafety.message=You should wear a helmet...
 
 d3.mineSafety.config.mineSafety=MineSafety
 
@@ -7,3 +8,6 @@ d3.mineSafety.config.yLevel.tooltip=The Y level at which you should wear a helme
 
 d3.mineSafety.config.chance=chance
 d3.mineSafety.config.chance.tooltip=The chance you get damaged this tick, in percent.
+
+d3.mineSafety.config.timeout=timeout
+d3.mineSafety.config.timeout.tooltip=The minimum time between 2 hits from this mod.
