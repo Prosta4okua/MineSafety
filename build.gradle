@@ -1,95 +1,57 @@
 buildscript {
     repositories {
-        mavenCentral()
+        jcenter()
         maven {
             name = "forge"
             url = "http://files.minecraftforge.net/maven"
         }
-        maven {
-            name = "sonatype"
-            url = "https://oss.sonatype.org/content/repositories/snapshots/"
-        }
     }
     dependencies {
-        classpath 'net.minecraftforge.gradle:ForgeGradle:1.2-SNAPSHOT'
+        classpath "net.minecraftforge.gradle:ForgeGradle:2.2-SNAPSHOT"
     }
 }
 
-import groovy.json.*
+apply plugin: "net.minecraftforge.gradle.forge"
 
-configurations {
-    compile
-    deployJars
-}
+version = modVersion
+group = modGroup
+archivesBaseName = modBaseName
 
-apply plugin: "forge"
-apply plugin: "maven"
-
-group = "net.doubledoordev.minesafety"
-version = "1.0.0"
-
-targetCompatibility = 1.7
-sourceCompatibility = 1.7
-
-archivesBaseName = 'MineSafety'
-def githuborg = 'DoubleDoorDevelopment'
-def description = 'You should wear a helmet when you go mining...'
 minecraft {
-    version = "1.7.10-10.13.1.1224"
-    runDir = "jars"
+    version = project.forgeVersion
+    runDir = "run"
+
+    // the mappings can be changed at any time, and must be in the following format.
+    // snapshot_YYYYMMDD   snapshot are built nightly.
+    // stable_#            stables are built at the discretion of the MCP team.
+    // Use non-default mappings at your own risk. they may not always work.
+    // simply re-run your setup task after changing the mappings to update your workspace.
+    mappings = project.mcpVersion
+    // makeObfSourceJar = false // an Srg named sources jar is made by default. uncomment this to disable.
 }
 
 repositories {
-    maven {
-         name "DDD repo"
-         url "http://doubledoordev.net/maven/"
-     }
+    mavenCentral()
 }
 
 dependencies {
-    compile "net.doubledoordev.d3core:D3Core:" + project.minecraft.version + "-+:dev"
 }
-
-if (System.getenv().BUILD_NUMBER != null) version += "." + System.getenv().BUILD_NUMBER
-def builder = new groovy.json.JsonBuilder()
-builder (version: version, mcversion: project.minecraft.version, apiversion: project.minecraft.apiVersion)
-new File("versions.json").write(builder.toPrettyString())
 
 processResources {
+    // this will ensure that this task is redone when the versions change.
+    inputs.property "version", project.version
+    inputs.property "mcversion", project.minecraft.version
+
+    // replace stuff in mcmod.info, nothing else
     from(sourceSets.main.resources.srcDirs) {
-        include '**/*.info'
-        expand 'version':project.version, 'mcversion':project.minecraft.version, 'modid':project.archivesBaseName, 'githuborg':githuborg, 'description':description
+        include "mcmod.info"
+
+        // replace version and mcversion
+        expand "version": project.version, "mcversion": project.minecraft.version
     }
 
+    // copy everything else, thats not the mcmod.info
     from(sourceSets.main.resources.srcDirs) {
-        exclude '**/*.info'
+        exclude "mcmod.info"
     }
-}
-
-task sourcesJar(type: Jar) {
-    from "LICENSE.txt"
-    from sourceSets.main.allSource
-    classifier = 'src'
-    appendix = project.minecraft.version
-}
-
-task deobfJar(type: Jar) {
-    from "LICENSE.txt"
-    from sourceSets.main.output
-    from (sourceSets.main.allSource.srcDirs) {
-        include '**/*.java'
-    }
-	classifier = 'dev'
-    appendix = project.minecraft.version
-}
-
-jar {
-    from "LICENSE.txt"
-    appendix = project.minecraft.version
-}
-
-artifacts {
-	archives jar
-    archives sourcesJar
-    archives deobfJar
 }
