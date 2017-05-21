@@ -1,4 +1,4 @@
-package net.doubledoordev;
+package net.doubledoordev.minesafety;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
@@ -18,20 +18,18 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 
-import java.io.File;
 import java.util.List;
 import java.util.Random;
 
 @Mod(modid = MineSafety.MOD_ID, name = MineSafety.MOD_NAME, version = MineSafety.VERSION)
 public class MineSafety
 {
-    public static final String MOD_NAME = "MineSafety";
+    public static final String MOD_NAME = "minesafety";
     public static final String VERSION  = "1.1.0";
-    public static final String       MOD_ID        = "minesafety";
-    private                 Random       random       = new Random();
-    private                 DamageSource damageSource = new DamageSource("helmet").setDifficultyScaled();
-    private             Configuration   configuration;
-    private File folder;
+    public static final String MOD_ID = "minesafety";
+    private Random random = new Random();
+    private DamageSource damageSource = new DamageSource("helmet").setDifficultyScaled();
+    private Configuration configuration;
     private int yLevel;
     private float chance;
     private int timeout;
@@ -40,12 +38,8 @@ public class MineSafety
     @EventHandler
     public void preInit(FMLPreInitializationEvent event)
     {
-        //FMLCommonHandler.instance().bus().register(this);
         MinecraftForge.EVENT_BUS.register(this);
-
-        folder = new File(event.getModConfigurationDirectory(), MOD_ID);
-        folder.mkdir();
-        configuration = new Configuration(new File(folder, event.getSuggestedConfigurationFile().getName()));
+        configuration = new Configuration(event.getSuggestedConfigurationFile());
         updateConfig();
     }
 
@@ -75,7 +69,6 @@ public class MineSafety
         }
     }
 
-    //@Override
     public void addConfigElements(List<IConfigElement> configElements)
     {
         configElements.add(new ConfigElement(configuration.getCategory(MOD_ID.toLowerCase())));
