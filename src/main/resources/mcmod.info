@@ -1,7 +1,7 @@
 [
   {
     "modid": "minesafety",
-    "name": "minesafety",
+    "name": "MineSafety",
     "description": "You should wear a helmet when you go mining...",
     "version": "${version}",
     "mcversion": "${mcversion}",
