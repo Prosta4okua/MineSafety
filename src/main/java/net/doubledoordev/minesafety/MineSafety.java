@@ -32,11 +32,10 @@ import java.util.Random;
 public class MineSafety
 {
     public static final String MOD_NAME = "minesafety";
-    public static final String VERSION  = "1.3.0";
+    public static final String VERSION  = "1.3.1";
     public static final String MOD_ID = "minesafety";
     private Random random = new Random();
     private DamageSource damageSource = new DamageSource("helmet").setDifficultyScaled();
-    private Minecraft mc = Minecraft.getMinecraft();
     private ItemDepthGauge depthGauge = new ItemDepthGauge();
 
     @EventHandler
@@ -60,6 +59,7 @@ public class MineSafety
     @SubscribeEvent
     public void drawTextEvent(RenderGameOverlayEvent.Text event)
     {
+        Minecraft mc = Minecraft.getMinecraft();
         ArrayList<String> list = event.getLeft();
         int yPos = mc.player.getPosition().getY();
         for(int i=0; i < 35; i++)
