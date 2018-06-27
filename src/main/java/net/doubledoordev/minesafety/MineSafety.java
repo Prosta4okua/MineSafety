@@ -66,7 +66,14 @@ public class MineSafety
         {
             if (mc.player.inventory.getStackInSlot(i).isItemEqual(new ItemStack(depthGauge)))
             {
-                list.add("Y=" + yPos);
+                if (yPos <= ModConfig.yLevel)
+                {
+                    list.add("\u00A74Y=" + yPos);
+                }
+                else
+                {
+                    list.add("Y=" + yPos);
+                }
             }
         }
     }
