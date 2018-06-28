@@ -14,4 +14,5 @@ d3.minesafety.config.timeout.tooltip=The minimum time in seconds between 2 hits 
 d3.minesafety.config.message=Message
 d3.minesafety.config.message.tooltip=The message displayed in-game when user takes damage from no helmet.
 
+d3.minesafety.config.dimlist=Dimension Blacklist
 item.depth_gauge.name=Depth Gauge

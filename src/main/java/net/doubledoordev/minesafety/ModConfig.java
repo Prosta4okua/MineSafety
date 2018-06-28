@@ -25,4 +25,8 @@ public class ModConfig
     @Config.Comment("The message displayed in-game when user takes damage from no helmet.")
     public static String message = "Ouch! Falling rocks... I should wear a helmet.";
 
+    @Config.LangKey("d3.minesafety.config.dimlist")
+    @Config.Comment("Dimension damage BLACKLIST, MineSafety damage will be disabled in these dimensions only!")
+    public static int[] dims = new int[0];
+
 }

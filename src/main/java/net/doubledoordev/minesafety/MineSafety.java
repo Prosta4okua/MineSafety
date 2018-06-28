@@ -32,12 +32,11 @@ import java.util.Random;
 public class MineSafety
 {
     public static final String MOD_NAME = "minesafety";
-    public static final String VERSION  = "1.3.1";
+    public static final String VERSION  = "1.4.0";
     public static final String MOD_ID = "minesafety";
     private Random random = new Random();
     private DamageSource damageSource = new DamageSource("helmet").setDifficultyScaled();
     private ItemDepthGauge depthGauge = new ItemDepthGauge();
-
     @EventHandler
     public void preInit(FMLPreInitializationEvent event)
     {
@@ -83,23 +82,54 @@ public class MineSafety
     {
         if (event.phase == TickEvent.Phase.END) return;
         EntityPlayer player = event.player;
-
         NBTTagCompound data = player.getEntityData();
-        if (data.hasKey(MOD_ID))
+        if (ModConfig.dims.length == 0)
         {
-            if (data.getInteger(MOD_ID) == 0) data.removeTag(MOD_ID);
-            else data.setInteger(MOD_ID, data.getInteger(MOD_ID) - 1);
+            if (data.hasKey(MOD_ID))
+            {
+                if (data.getInteger(MOD_ID) == 0) data.removeTag(MOD_ID);
+                else data.setInteger(MOD_ID, data.getInteger(MOD_ID) - 1);
+            }
+            else
+            {
+                if (player.posY >= ModConfig.yLevel) return;
+                if (player.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() instanceof ItemArmor) return;
+                if (player.getEntityWorld().canBlockSeeSky(new BlockPos(player.posX, player.posY, player.posZ)))
+                    return;
+                if (random.nextFloat() > ModConfig.chance) return;
+                if (player.attackEntityFrom(damageSource, 1.0f + 0.2f * random.nextFloat()))
+                {
+                    player.sendStatusMessage(new TextComponentString(ModConfig.message), false);
+                    data.setInteger(MOD_ID, 20 * ModConfig.timeout);
+                }
+            }
         }
         else
         {
-            if (player.posY >= ModConfig.yLevel) return;
-            if (player.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() instanceof  ItemArmor) return;
-            if (player.getEntityWorld().canBlockSeeSky(new BlockPos(player.posX, player.posY, player.posZ))) return;
-            if (random.nextFloat() > ModConfig.chance) return;
-            if (player.attackEntityFrom(damageSource, 1.0f + 0.2f * random.nextFloat()))
+            for (int dim : ModConfig.dims)
             {
-                player.sendStatusMessage(new TextComponentString(ModConfig.message),false);
-                data.setInteger(MOD_ID, 20 * ModConfig.timeout);
+                if (player.world.provider.getDimension() != dim)
+                {
+                    if (data.hasKey(MOD_ID))
+                    {
+                        if (data.getInteger(MOD_ID) == 0) data.removeTag(MOD_ID);
+                        else data.setInteger(MOD_ID, data.getInteger(MOD_ID) - 1);
+                    }
+                    else
+                    {
+                        if (player.posY >= ModConfig.yLevel) return;
+                        if (player.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() instanceof ItemArmor)
+                            return;
+                        if (player.getEntityWorld().canBlockSeeSky(new BlockPos(player.posX, player.posY, player.posZ)))
+                            return;
+                        if (random.nextFloat() > ModConfig.chance) return;
+                        if (player.attackEntityFrom(damageSource, 1.0f + 0.2f * random.nextFloat()))
+                        {
+                            player.sendStatusMessage(new TextComponentString(ModConfig.message), false);
+                            data.setInteger(MOD_ID, 20 * ModConfig.timeout);
+                        }
+                    }
+                }
             }
         }
     }
@@ -111,6 +141,5 @@ public class MineSafety
             ConfigManager.sync(MOD_ID, Config.Type.INSTANCE);
         }
     }
-
 }
 
