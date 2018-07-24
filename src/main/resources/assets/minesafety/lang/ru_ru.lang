@@ -12,7 +12,7 @@ d3.minesafety.config.timeout=Время Ожидания
 d3.minesafety.config.timeout.tooltip=Минимальное время в секундах, между 2-мя хитами из этого мода.
 
 d3.minesafety.config.message=Сообщение
-d3.minesafety.config.message.tooltip=Отображение внутриигрового сообщения, когда пользователь получает урон от шлема.
+d3.minesafety.config.message.tooltip=Отображение внутриигрового сообщения, когда пользователь получает урон без шлема.
 
 d3.minesafety.config.dimlist=Измерение Чёрного Списка
 item.depth_gauge.name=Глубинометр
